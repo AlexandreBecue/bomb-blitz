@@ -1,0 +1,20 @@
+{
+    "levels": [
+      {
+        "levelNumber": 1,
+        "timeLimit": 10,
+        "code": 1234
+      },
+      {
+        "levelNumber": 2,
+        "timeLimit": 50,
+        "code": 5678
+      },
+      {
+        "levelNumber": 3,
+        "timeLimit": 30,
+        "code": 1111
+      }
+    ]
+  }
+  

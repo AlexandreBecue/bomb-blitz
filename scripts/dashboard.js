@@ -4,7 +4,15 @@ class DashboardScene extends Phaser.Scene {
     }
     create() {
         // Affichage du fond d'écran
-        this.add.image(0, 0, 'background').setOrigin(0);
+        let bg = this.add.image(0, 0, 'background').setOrigin(0);
+
+        // Redimensionnement de l'image de fond pour qu'elle remplisse l'écran
+        bg.displayWidth = this.sys.game.config.width;
+        bg.displayHeight = this.sys.game.config.height;
+        this.scale.on('resize', () => {
+        bg.displayWidth = this.sys.game.config.width;
+        bg.displayHeight = this.sys.game.config.height;
+        });
 
         this.add.text(this.cameras.main.centerX, 100, 'Dashboard', {
             font: '32px Arial',

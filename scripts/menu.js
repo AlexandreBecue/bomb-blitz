@@ -8,8 +8,11 @@ class MenuScene extends Phaser.Scene {
         let bg = this.add.image(0, 0, 'background').setOrigin(0);
 
         // Redimensionnement de l'image de fond pour qu'elle remplisse l'écran
-        bg.displayWidth = this.sys.game.config.width;
-        bg.displayHeight = this.sys.game.config.height;
+        let screenWidth = this.sys.game.config.width;
+        let screenHeight = this.sys.game.config.height;
+
+        bg.displayWidth = screenWidth;
+        bg.displayHeight = screenHeight;
         this.scale.on('resize', () => {
             bg.displayWidth = this.sys.game.config.width;
             bg.displayHeight = this.sys.game.config.height;
@@ -21,27 +24,38 @@ class MenuScene extends Phaser.Scene {
         music.volume = 0.15;
 
         // Ajout d'un titre
-        this.add.text(this.cameras.main.centerX, 100, 'Le compte à rebours explosif', {
-            font: '32px Arial',
+        this.add.text(this.cameras.main.centerX, 100, 'BombBlitz', {
+            font: '128px Arial',
             fill: '#ffffff'
         }).setOrigin(0.5);
 
         // Ajout d'un bouton pour commencer le jeu
-        let playButton = this.add.sprite(this.cameras.main.centerX, 200, 'button').setInteractive();
-        let leaderboardButton = this.add.sprite(this.cameras.main.centerX, 400, 'leaderboard').setInteractive();
+        let playButton = this.add.sprite(this.cameras.main.centerX, this.cameras.main.centerY, 'playButton').setInteractive();
+
+        let scaleX = screenWidth / playButton.width / 2;
+        let scaleY = screenHeight / playButton.height / 2;
+        let scale = Math.min(scaleX, scaleY);
+        playButton.setScale(scale);
+
+        let leaderboardButton = this.add.sprite(0, 0, 'ranking').setInteractive();
+        leaderboardButton.setOrigin(1, 0);
+        leaderboardButton.setPosition(this.cameras.main.width, 0);
+
+        leaderboardButton.setScale(scale/3);
+
         playButton.on('pointerover', () => {
-            playButton.setScale(1.1);
+            playButton.setScale(scale+0.1);
         });
 
         playButton.on('pointerout', () => {
-            playButton.setScale(1);
+            playButton.setScale(scale);
         });
         leaderboardButton.on('pointerover', () => {
-            leaderboardButton.setScale(1.1);
+            leaderboardButton.setScale(scale/3+0.1);
         });
 
         leaderboardButton.on('pointerout', () => {
-            leaderboardButton.setScale(1);
+            leaderboardButton.setScale(scale/3);
         });
 
         // Ajout d'un événement de clic sur le bouton de jeu

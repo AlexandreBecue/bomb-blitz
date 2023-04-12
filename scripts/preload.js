@@ -54,11 +54,12 @@ class PreloadScene extends Phaser.Scene {
       });
 
       // Ajout de la musique
-      let music = this.sound.add('bomb-blitz-tense');
-      music.play();
-      music.loop = true
-      music.volume = 0.15;
-  
+      localStorage.setItem('music', 'true');
+
+      // Initiation du cache
+      localStorage.setItem('score', '0');
+      localStorage.setItem('currentLevel', '1');
+
       // Chargement des ressources nécessaires au jeu
       this.load.image('background', 'assets/images/background.png');
       this.load.image('selector', 'assets/images/selector.png');

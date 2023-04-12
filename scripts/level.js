@@ -8,9 +8,9 @@ class LevelScene extends Phaser.Scene {
     this.load.image('background-level1', 'assets/images/background-level1.png');
     this.load.json('levels', 'assets/data/levels.json');
     this.load.image('cursor', 'assets/images/cursor.png');
-    this.load.audio('bomb-blitz-tense', 'assets/sounds/bomb-blitz-tense.mp3');
-    this.load.audio('bomb-blitz-fearful', 'assets/sounds/bomb-blitz-fearful.mp3');
-    this.load.audio('bomb-blitz-scary', 'assets/sounds/bomb-blitz-scary.mp3');
+    this.load.audio('tense', 'assets/sounds/tense.mp3');
+    this.load.audio('fearful', 'assets/sounds/fearful.mp3');
+    this.load.audio('scary', 'assets/sounds/scary.mp3');
     this.load.audio('clock', 'assets/sounds/clock.mp3');
     this.load.audio('beep', 'assets/sounds/beep.mp3');
   }
@@ -20,22 +20,22 @@ class LevelScene extends Phaser.Scene {
     let bg = this.add.image(0, 0, 'background-level1').setOrigin(0);
 
     // Ajout de la musique
-    this.sound.getAll('bomb-blitz-tense').forEach(sound => {
+    this.sound.getAll('tense').forEach(sound => {
       sound.stop();
     });
     let musicTitle = "";
     let music;
     let currentLevel = parseInt(localStorage.getItem('currentLevel'));
     if (currentLevel === 1) {
-      musicTitle = "bomb-blitz-fearful";
+      musicTitle = "fearful";
     } else if (currentLevel === 15) {
-      musicTitle = "bomb-blitz-scary";
+      musicTitle = "scary";
     }
     if (musicTitle !== "") {
       music = this.sound.add(musicTitle);
       music.play();
-      music.volume = 0.15;
       music.loop = true;
+      music.volume = 0.15;
     }
     let clock = this.sound.add('clock');
     clock.play();
@@ -70,17 +70,10 @@ class LevelScene extends Phaser.Scene {
     })
 
     // Consigne pour arreter le curseur
-    let ruleText = this.add.text(levelText.x - 70, hintText.y + 25, "\"Espace\" pour arrêter", {
+    this.add.text(levelText.x - 70, hintText.y + 25, "\"Espace\" pour arrêter", {
       font: 'italic 16px Arial',
       fill: '#ccd6db'
     })
-
-    // Ajout de la bombe à désamorcer
-    //let bomb = this.add.sprite(this.cameras.main.centerX, this.cameras.main.centerY, 'bomb');
-
-    // Calcul de la vitesse de rotation du curseur en fonction du niveau
-    let baseRotationSpeed = 0.02; // Vitesse de rotation de base (radians par image)
-    this.cursorRotationSpeed = baseRotationSpeed * levelData.levelNumber;
     
     // Ajout de l'écouteur d'événements pour la touche "espace"
     let spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -88,7 +81,7 @@ class LevelScene extends Phaser.Scene {
     let circleRadius = 100;
 
     // Dessin du cercle au milieu du jeu
-    let circleBg = new Phaser.Geom.Circle(this.cameras.main.centerX, this.cameras.main.centerY, circleRadius+10);
+    new Phaser.Geom.Circle(this.cameras.main.centerX, this.cameras.main.centerY, circleRadius+10);
     let circleGraphicsBg = this.add.graphics();
     circleGraphicsBg.fillStyle(0x000000, 0.3);
 
@@ -111,13 +104,6 @@ class LevelScene extends Phaser.Scene {
     // Zone de desamorcage
     let greenZone= this.add.graphics();
 
-    // Conversion de l'angle en radians
-    //let rectangleAngleRadians = Phaser.Math.DegToRad(rectangleAngle);
-
-    // Calcul des coordonnées du rectangle en utilisant des coordonnées polaires
-    //let rectangleX = circleCenterX + circleRadius * Math.cos(rectangleAngleRadians);
-    //let rectangleY = circleCenterY + circleRadius * Math.sin(rectangleAngleRadians);
-
     let startAngle = Phaser.Math.DegToRad(rectangleAngle); // Angle de départ en radians
     let openingAngle = Phaser.Math.DegToRad(rectWidth); // Angle d'ouverture en radians
 
@@ -127,21 +113,13 @@ class LevelScene extends Phaser.Scene {
     greenZone.lineTo(circleCenterX + circleRadius * Math.cos(startAngle + openingAngle), circleCenterY + circleRadius * Math.sin(startAngle + openingAngle));
     greenZone.arc(circleCenterX, circleCenterY, circleRadius, startAngle + openingAngle, startAngle, true);
     greenZone.lineTo(circleCenterX + circleRadius * Math.cos(startAngle), circleCenterY + circleRadius * Math.sin(startAngle));
-    //greenZone.arc(circleCenterX, circleCenterY, circleRadius, startAngle, startAngle + openingAngle, false);
     greenZone.closePath();
     greenZone.strokePath();
-
-    // Ajout du rectangle avec les coordonnées calculées
-    //let zoneRectangle = this.add.rectangle(rectangleX, rectangleY, 10, rectWidth, 0x63af43);
-
-    // Rotation du rectangle pour qu'il soit tangent au cercle
-    //zoneRectangle.rotation = rectangleAngleRadians;
 
     // Ajout du curseur qui tourne sur les contours du cercle
     let cursor = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, 'cursor');
     cursor.setOrigin(0.5, 1); // Positionne l'origine du curseur à sa base
 
-    // 
     this.cursor = cursor;
 
     let angle = 0;
@@ -177,7 +155,7 @@ class LevelScene extends Phaser.Scene {
         clock.stop();
         let beep = this.sound.add('beep');
         beep.play();
-        beep.volume = 0.15;
+        beep.volume = 0.1;
         localStorage.setItem('score', (parseInt(localStorage.getItem('currentLevel'))*timeLeft).toString());
         localStorage.setItem('currentLevel', (parseInt(localStorage.getItem('currentLevel'))+1).toString());
         this.scene.start('LevelScene');
@@ -227,20 +205,11 @@ class LevelScene extends Phaser.Scene {
         });
       }
 
-      update () {
-
-        // Pour l'augmentation de la vitesse de rotation en fonction du niveau actuel
-        //this.cursor.rotation += this.cursorRotationSpeed;
-      }
-
-      isCursorInRect(cursorAngleTT, startAngle, endAngle, circleRadius) {
-        let circonfTotaleCercle = 2 * Math.PI * circleRadius;
-
+      isCursorInRect(cursorAngleTT, startAngle, endAngle) {
         let cursorAngle = cursorAngleTT - 90;
         if (cursorAngle <= -180) {
           cursorAngle += 360;
         }
-        //let decalage = ((rectWidth/2)/circonfTotaleCercle) * 360;
 
         let rectAngleMin = startAngle;
         let rectAngleMax = endAngle;

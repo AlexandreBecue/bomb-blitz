@@ -35,7 +35,11 @@ class GameOverScene extends Phaser.Scene {
         explosion.volume = 0.15;
 
         // Ajout d'un texte pour indiquer que le joueur a perdu
-        this.add.text(this.cameras.main.centerX, 100, 'VOUS AVEZ ATTEINT LE NIVEAU ' + localStorage.getItem('currentLevel'), {
+        this.add.text(this.cameras.main.centerX, 60, 'AGENT ' + localStorage.getItem('username'), {
+            font: '32px Arial',
+            fill: '#ffffff'
+        }).setOrigin(0.5);
+        this.add.text(this.cameras.main.centerX, 100, 'VOUS AVEZ DÉSAMORCÉ ' + (parseInt(localStorage.getItem('currentLevel'))-1).toString() + " BOMBES !", {
             font: '32px Arial',
             fill: '#ffffff'
         }).setOrigin(0.5);

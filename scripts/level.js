@@ -1,6 +1,6 @@
 class LevelScene extends Phaser.Scene {
   constructor() {
-    super({ key: 'LevelScene' });
+    super({key: 'LevelScene'});
   }
 
   preload() {
@@ -40,7 +40,7 @@ class LevelScene extends Phaser.Scene {
     let clock = this.sound.add('clock');
     clock.play();
     clock.volume = 0.15;
-  
+
     // Redimensionnement de l'image de fond pour qu'elle remplisse l'écran
     bg.displayWidth = this.sys.game.config.width;
     bg.displayHeight = this.sys.game.config.height;
@@ -54,8 +54,8 @@ class LevelScene extends Phaser.Scene {
       localStorage.setItem('currentLevel', '1');
       localStorage.setItem('score', '0');
     }
-    let bombLevels = this.cache.json.get('levels').levels.length-1;
-    let currentBombLevel = Math.round(Math.random()*bombLevels);
+    let bombLevels = this.cache.json.get('levels').levels.length - 1;
+    let currentBombLevel = Math.round(Math.random() * bombLevels);
     let levelData = this.cache.json.get('levels').levels[currentBombLevel];
 
     // Ajout du texte de niveau
@@ -64,7 +64,7 @@ class LevelScene extends Phaser.Scene {
       fill: '#ffffff'
     }).setOrigin(0.5);
 
-    let hintText = this.add.text(levelText.x-200, levelText.y + 20, "Arrêtez le curseur dans la zone pour désamorser la bombe !", {
+    let hintText = this.add.text(levelText.x - 200, levelText.y + 20, "Arrêtez le curseur dans la zone pour désamorser la bombe !", {
       font: 'italic 16px Arial',
       fill: '#ccd6db'
     });
@@ -74,21 +74,21 @@ class LevelScene extends Phaser.Scene {
       font: 'italic 16px Arial',
       fill: '#ccd6db'
     });
-    
+
     // Ajout de l'écouteur d'événements pour la touche "espace"
     let spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     let circleRadius = 100;
 
     // Dessin du cercle au milieu du jeu
-    new Phaser.Geom.Circle(this.cameras.main.centerX, this.cameras.main.centerY, circleRadius+10);
+    new Phaser.Geom.Circle(this.cameras.main.centerX, this.cameras.main.centerY, circleRadius + 10);
     let circleGraphicsBg = this.add.graphics();
     circleGraphicsBg.fillStyle(0x000000, 0.3);
 
     let circle = new Phaser.Geom.Circle(this.cameras.main.centerX, this.cameras.main.centerY, circleRadius);
-    let circleGraphics = this.add.graphics({ lineStyle: { width: 6, color: 0xffffff } });
+    let circleGraphics = this.add.graphics({lineStyle: {width: 6, color: 0xffffff}});
 
-    circleGraphicsBg.fillCircle(this.cameras.main.centerX, this.cameras.main.centerY, circleRadius+30);
+    circleGraphicsBg.fillCircle(this.cameras.main.centerX, this.cameras.main.centerY, circleRadius + 30);
     circleGraphics.strokeCircleShape(circle);
 
     // Coordonnées du centre du cercle
@@ -99,10 +99,10 @@ class LevelScene extends Phaser.Scene {
     let rectangleAngle = Phaser.Math.Between(0, 360);
 
     // Longueur de la zone
-    let rectWidth = 40-parseInt(localStorage.getItem('currentLevel'));
+    let rectWidth = 40 - parseInt(localStorage.getItem('currentLevel'));
 
     // Zone de desamorcage
-    let greenZone= this.add.graphics();
+    let greenZone = this.add.graphics();
 
     let startAngle = Phaser.Math.DegToRad(rectangleAngle); // Angle de départ en radians
     let openingAngle = Phaser.Math.DegToRad(rectWidth); // Angle d'ouverture en radians
@@ -140,7 +140,7 @@ class LevelScene extends Phaser.Scene {
       loop: true,
       callback: () => {
         if (cursorRotating) {
-          angle += 2*(1+parseInt(localStorage.getItem('currentLevel'))/10) * rotationSens;
+          angle += 2 * (1 + parseInt(localStorage.getItem('currentLevel')) / 10) * rotationSens;
           this.cursor.rotation = Phaser.Math.DegToRad(angle);
         }
       }
@@ -151,13 +151,13 @@ class LevelScene extends Phaser.Scene {
       cursorRotating = !cursorRotating;
 
       // On donne des deg
-      if (this.isCursorInRect(this.cursor.angle, Phaser.Math.RadToDeg(startAngle), Phaser.Math.RadToDeg(startAngle+openingAngle), circleRadius)) {
+      if (this.isCursorInRect(this.cursor.angle, Phaser.Math.RadToDeg(startAngle), Phaser.Math.RadToDeg(startAngle + openingAngle), circleRadius)) {
         clock.stop();
         let beep = this.sound.add('beep');
         beep.play();
         beep.volume = 0.1;
-        localStorage.setItem('score', (parseInt(localStorage.getItem('currentLevel'))*timeLeft).toString());
-        localStorage.setItem('currentLevel', (parseInt(localStorage.getItem('currentLevel'))+1).toString());
+        localStorage.setItem('score', (parseInt(localStorage.getItem('currentLevel')) * timeLeft).toString());
+        localStorage.setItem('currentLevel', (parseInt(localStorage.getItem('currentLevel')) + 1).toString());
         this.scene.start('LevelScene');
       } else {
         clock.stop();
@@ -165,73 +165,56 @@ class LevelScene extends Phaser.Scene {
       }
     });
 
-    let codeInput = this.add.dom(this.cameras.main.centerX, this.cameras.main.centerY + 200, 'input', 'font-size: 32px; width: 200px; height: 40px; padding: 10px; border: none; border-radius: 5px; text-align: center;');
-    codeInput.node.placeholder = 'Saisir le code';
+    // Configuration du compte à rebours
+    let timeLeft = levelData.timeLimit * 10;
+    let timerText = this.add.text(10, 10, 'Temps restant: ' + Math.ceil(timeLeft / 10), {
+      font: '24px Arial',
+      fill: '#ffffff'
+    }).setOrigin(0);
 
-    // Ajout du bouton pour vérifier le code
-    let checkCodeButton = this.add.dom(this.cameras.main.centerX, this.cameras.main.centerY + 300, 'button', 'font-size: 24px; width: 150px; height: 50px; padding: 10px; border: none; border-radius: 5px; background-color: #008CBA; color: #ffffff;', 'Vérifier le code');
-    checkCodeButton.addListener('click');
-    checkCodeButton.on('click', function () {
-        let code = codeInput.node.value;
-        if (code === levelData.code) {
-            // Le code est correct, passer au niveau suivant
-            console.log('Code correct !');
-        } else {
-            // Le code est incorrect, afficher un message d'erreur
-            console.log('Code incorrect !');
+    this.time.addEvent({
+      delay: 100,
+      loop: true,
+      callback: function () {
+        timeLeft--;
+        timerText.setText('Temps restant: ' + Math.ceil(timeLeft / 10));
+
+        // Code pour gérer la fin du jeu si le temps est écoulé
+        if (timeLeft === 0) {
+          this.scene.start('GameOverScene');
         }
-    }, this);
+      },
+      callbackScope: this
+    });
+  }
 
-        // Configuration du compte à rebours
-        let timeLeft = levelData.timeLimit*10;
-        let timerText = this.add.text(10, 10, 'Temps restant: ' + Math.ceil(timeLeft/10), {
-          font: '24px Arial',
-          fill: '#ffffff'
-        }).setOrigin(0);
-
-        this.time.addEvent({
-          delay: 100,
-          loop: true,
-          callback: function () {
-            timeLeft--;
-            timerText.setText('Temps restant: ' + Math.ceil(timeLeft/10));
-
-            if (timeLeft === 0) {
-              // Code pour gérer la fin du jeu si le temps est écoulé
-              this.scene.start('GameOverScene');
-            }
-          },
-          callbackScope: this
-        });
-      }
-
-      isCursorInRect(cursorAngleTT, startAngle, endAngle) {
-        let cursorAngle = cursorAngleTT - 90;
-        if (cursorAngle <= -180) {
-          cursorAngle += 360;
-        }
-
-        let rectAngleMin = startAngle;
-        let rectAngleMax = endAngle;
-
-        let isRectAngleModified = false;
-
-        if (rectAngleMin < -180) {
-          isRectAngleModified = true;
-          rectAngleMin += 360;
-        }
-
-        if (rectAngleMax > 180) {
-          isRectAngleModified = true;
-          rectAngleMax -= 360;
-        }
-
-        let returnedValue = cursorAngle >= rectAngleMin && cursorAngle <= rectAngleMax;
-
-        if (isRectAngleModified) {
-          returnedValue = cursorAngle >= rectAngleMin || cursorAngle <= rectAngleMax;
-        }
-
-        return returnedValue;
-      }
+  isCursorInRect(cursorAngleTT, startAngle, endAngle) {
+    let cursorAngle = cursorAngleTT - 90;
+    if (cursorAngle <= -180) {
+      cursorAngle += 360;
     }
+
+    let rectAngleMin = startAngle;
+    let rectAngleMax = endAngle;
+
+    let isRectAngleModified = false;
+
+    if (rectAngleMin < -180) {
+      isRectAngleModified = true;
+      rectAngleMin += 360;
+    }
+
+    if (rectAngleMax > 180) {
+      isRectAngleModified = true;
+      rectAngleMax -= 360;
+    }
+
+    let returnedValue = cursorAngle >= rectAngleMin && cursorAngle <= rectAngleMax;
+
+    if (isRectAngleModified) {
+      returnedValue = cursorAngle >= rectAngleMin || cursorAngle <= rectAngleMax;
+    }
+
+    return returnedValue;
+  }
+}

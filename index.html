@@ -1,43 +1,43 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <meta charset="utf-8">
-    <title>BombBlitz</title>
-    <link rel="icon" type="image/x-icon" href="assets/images/logo.png">
-    <script src="scripts/phaser.js"></script>
-    <script src="scripts/boot.js"></script>
-    <script src="scripts/preload.js"></script>
-    <script src="scripts/menu.js"></script>
-    <script src="scripts/level.js"></script>
-    <script src="scripts/gameover.js"></script>
-    <script src="scripts/inputPseudo.js"></script>
-    <script src="scripts/leaderboard.js"></script>
-    <script src="scripts/game.js"></script>
-    <link rel="icon" type="image/png" href="/assets/images/logo.png"/>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<style>
-  #username-input {
-    position: absolute;
-    top: 30%;
-    padding: 10px;
-    background-color: transparent;
-    border: none;
-    border-bottom: 3px solid white;
-    border-radius: 15px;
-    font-size: 18px;
-    color: white;
-    transform: translate(-50%, -50%);
-    display: none;
-  }
+      <meta charset="utf-8">
+      <title>BombBlitz</title>
+      <link rel="icon" type="image/x-icon" href="assets/images/logo.png">
+      <script src="scripts/phaser.js"></script>
+      <script src="scripts/boot.js"></script>
+      <script src="scripts/preload.js"></script>
+      <script src="scripts/menu.js"></script>
+      <script src="scripts/level.js"></script>
+      <script src="scripts/gameover.js"></script>
+      <script src="scripts/inputPseudo.js"></script>
+      <script src="scripts/leaderboard.js"></script>
+      <script src="scripts/game.js"></script>
+      <link rel="icon" type="image/png" href="/assets/images/logo.png"/>
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+      <style>
+          #username-input {
+              position: absolute;
+              top: 30%;
+              padding: 10px;
+              background-color: transparent;
+              border: none;
+              border-bottom: 3px solid white;
+              border-radius: 15px;
+              font-size: 18px;
+              color: white;
+              transform: translate(-50%, -50%);
+              display: none;
+          }
 
-  #username-input:focus {
-    outline: none;
-  }
-</style>
+          #username-input:focus {
+              outline: none;
+          }
+      </style>
   </head>
   <body>
     <div id="game-container"></div>
     <label for="username-input"></label>
-    <input type="text" name="name" placeholder="Votre pseudo" id="username-input" />
+    <input type="text" name="name" placeholder="Votre pseudo" id="username-input"/>
   </body>
 </html>

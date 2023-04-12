@@ -1,8 +1,8 @@
 <?php
-$serveur = "127.0.0.1";
-$username = "root";
-$password = "";
-$dbname = "game_phaser";
+$serveur = "bombblitz.cgwxwvjq05ab.eu-north-1.rds.amazonaws.com";
+$username = "admin";
+$password = "1tu75dro1d8p23j1hfd";
+$dbname = "bombblitz";
 
 $conn = new mysqli($serveur, $username, $password, $dbname);
 

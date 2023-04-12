@@ -8,6 +8,7 @@ class BootScene extends Phaser.Scene {
       this.load.image('background', 'assets/images/background.png');
       this.load.image('selector', 'assets/images/selector.png');
       this.load.image('button', 'assets/images/button.png');
+      this.load.image('playButton', 'assets/images/playButton.png');
       this.load.image('backButton', 'assets/images/backbutton.png');
       this.load.audio('bomb-blitz-tense-2', 'assets/sounds/bomb-blitz-tense-2.mp3');
       this.load.audio('sirene_police_1', 'assets/sounds/sirene_police_1.mp3');

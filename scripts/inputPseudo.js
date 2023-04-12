@@ -21,6 +21,7 @@ class InputPseudoScene extends Phaser.Scene {
         
         let usernameInput = document.querySelector("#username-input");
         usernameInput.style.display = "block";
+        usernameInput.style.marginLeft = this.cameras.main.centerX + "px";
 
         const playButton = this.add.sprite(this.cameras.main.centerX, 500, 'button').setInteractive();
         playButton.on('pointerover', () => {

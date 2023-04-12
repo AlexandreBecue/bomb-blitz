@@ -18,8 +18,21 @@ class InputPseudoScene extends Phaser.Scene {
             font: '32px Arial',
             fill: '#ffffff'
         }).setOrigin(0.5);
-        
         let usernameInput = document.querySelector("#username-input");
+        let backButton = this.add.sprite(75, 75, 'return').setInteractive();
+        backButton.on('pointerdown', function () {
+            usernameInput.style.display = "none";
+            this.scene.start('MenuScene');
+        }, this);
+
+        backButton.on('pointerover', () => {
+            backButton.setScale(1.1);
+        });
+
+        backButton.on('pointerout', () => {
+            backButton.setScale(1);
+        });
+
         usernameInput.style.display = "block";
         usernameInput.style.marginLeft = this.cameras.main.centerX + "px";
 

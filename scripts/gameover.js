@@ -25,9 +25,8 @@ class GameOverScene extends Phaser.Scene {
         backButton.on('pointerout', () => {
             backButton.setScale(1);
         });
-
         const data = {
-            username: 'test',
+            username:  localStorage.getItem('username'),
             score: 12,
         };
 

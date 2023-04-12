@@ -41,7 +41,7 @@ class MenuScene extends Phaser.Scene {
 
         // Ajout d'un événement de clic sur le bouton de jeu
         playButton.on('pointerdown', function () {
-            this.scene.start('LevelScene');
+            this.scene.start('InputPseudoScene');
         }, this);
         leaderboardButton.on('pointerdown', function () {
             this.scene.start('DashboardScene');

@@ -5,6 +5,7 @@ class LevelScene extends Phaser.Scene {
 
   preload() {
     this.load.image('background', 'assets/images/background.png');
+    this.load.image('background-level1', 'assets/images/background-level1.png');
     this.load.image('bomb', 'assets/images/bomb.png');
     this.load.image('selector', 'assets/images/selector.png');
     this.load.json('levels', 'assets/data/levels.json');
@@ -17,7 +18,7 @@ class LevelScene extends Phaser.Scene {
 
   create() {
     // Affichage du fond d'écran
-    let bg = this.add.image(0, 0, 'background').setOrigin(0);
+    let bg = this.add.image(0, 0, 'background-level1').setOrigin(0);
 
     // Ajout de la musique
     let music = this.sound.add('clock');

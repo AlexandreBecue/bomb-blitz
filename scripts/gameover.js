@@ -10,7 +10,14 @@ class GameOverScene extends Phaser.Scene {
 
     create() {
         // Affichage du fond d'écran
-        this.add.image(0, 0, 'background').setOrigin(0);
+        let bg = this.add.image(0, 0, 'background-level1-destoyed').setOrigin(0);
+
+        bg.displayWidth = this.sys.game.config.width;
+        bg.displayHeight = this.sys.game.config.height;
+        this.scale.on('resize', () => {
+          bg.displayWidth = this.sys.game.config.width;
+          bg.displayHeight = this.sys.game.config.height;
+        });
 
         let music = this.sound.add('explosion');
         music.play();

@@ -201,9 +201,27 @@ class LevelScene extends Phaser.Scene {
         }
         let decalage = ((rectWidth/2)/circonfTotaleCercle) * 360;
 
-        console.log({rectAngle});
-        console.log({cursorAngle});
+        let rectAngleMin = rectAngle - decalage;
+        let rectAngleMax = rectAngle + decalage;
 
-        return cursorAngle >= rectAngle - decalage && cursorAngle <= rectAngle + decalage;
+        let isRectAngleModified = false;
+
+        if (rectAngleMin < -180) {
+          isRectAngleModified = true;
+          rectAngleMin += 360;
+        }
+
+        if (rectAngleMax > 180) {
+          isRectAngleModified = true;
+          rectAngleMax -= 360;
+        }
+
+        let returnedValue = cursorAngle >= rectAngleMin && cursorAngle <= rectAngleMax;
+
+        if (isRectAngleModified) {
+          returnedValue = cursorAngle >= rectAngleMin || cursorAngle <= rectAngleMax;
+        }
+
+        return returnedValue;
       }
     }

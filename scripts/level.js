@@ -160,6 +160,7 @@ class LevelScene extends Phaser.Scene {
         }).setOrigin(1, 0).setInteractive();
         menuButton.on('pointerdown', function () {
           this.scene.start('MenuScene');
+          music.stop();
         }, this);
 
         // Configuration du compte à rebours

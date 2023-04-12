@@ -3,9 +3,25 @@ class GameOverScene extends Phaser.Scene {
         super({key: 'GameOverScene'});
     }
 
+    preload() {
+      this.load.image('background-level1-destoyed', 'assets/images/background-level1-destoyed.png');
+
+    }
+
     create() {
         // Affichage du fond d'écran
-        this.add.image(0, 0, 'background').setOrigin(0);
+        let bg = this.add.image(0, 0, 'background-level1-destoyed').setOrigin(0);
+
+        bg.displayWidth = this.sys.game.config.width;
+        bg.displayHeight = this.sys.game.config.height;
+        this.scale.on('resize', () => {
+          bg.displayWidth = this.sys.game.config.width;
+          bg.displayHeight = this.sys.game.config.height;
+        });
+
+        let music = this.sound.add('explosion');
+        music.play();
+        music.volume = 0.15;
 
         // Ajout d'un texte pour indiquer que le joueur a perdu
         this.add.text(this.cameras.main.centerX, 100, 'PERDU', {
@@ -16,6 +32,7 @@ class GameOverScene extends Phaser.Scene {
         let backButton = this.add.sprite(this.cameras.main.centerX, this.cameras.main.centerY, 'backButton').setInteractive();
         backButton.on('pointerdown', function () {
             this.scene.start('MenuScene');
+            music.stop();
         }, this);
 
         backButton.on('pointerover', () => {
@@ -25,10 +42,14 @@ class GameOverScene extends Phaser.Scene {
         backButton.on('pointerout', () => {
             backButton.setScale(1);
         });
+
         const data = {
             username:  localStorage.getItem('username'),
-            score: 12,
+            score: localStorage.getItem('score'),
         };
+
+        localStorage.setItem('currentLevel', '1');
+        localStorage.setItem('score', '0');
 
         axios.post('/bomb-blitz/api/dashboard.php', data)
             .then(function (response) {

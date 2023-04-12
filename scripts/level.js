@@ -5,16 +5,25 @@ class LevelScene extends Phaser.Scene {
 
   preload() {
     this.load.image('background', 'assets/images/background.png');
+    this.load.image('background-level1', 'assets/images/background-level1.png');
     this.load.image('bomb', 'assets/images/bomb.png');
     this.load.image('selector', 'assets/images/selector.png');
     this.load.json('levels', 'assets/data/levels.json');
     this.load.image('cursor', 'assets/images/cursor.png');
+    this.load.audio('bomb-blitz-tense-2', 'assets/sounds/bomb-blitz-tense-2.mp3');
+    this.load.audio('sirene_police_1', 'assets/sounds/sirene_police_1.mp3');
+    this.load.audio('clock', 'assets/sounds/clock.mp3');
 
   }
 
   create() {
     // Affichage du fond d'écran
-    let bg = this.add.image(0, 0, 'background').setOrigin(0);
+    let bg = this.add.image(0, 0, 'background-level1').setOrigin(0);
+
+    // Ajout de la musique
+    let music = this.sound.add('clock');
+    music.play();
+    music.volume = 0.15;
   
     // Redimensionnement de l'image de fond pour qu'elle remplisse l'écran
     bg.displayWidth = this.sys.game.config.width;
@@ -25,11 +34,16 @@ class LevelScene extends Phaser.Scene {
     });
 
     // Récupération des informations du premier niveau
-    let levelData = this.cache.json.get('levels').levels[0];
-    let currentLevel = 0;
+    if (localStorage.getItem('currentLevel') === null) {
+      localStorage.setItem('currentLevel', '1');
+      localStorage.setItem('score', '0');
+    }
+    let bombLevels = this.cache.json.get('levels').levels.length-1;
+    let currentBombLevel = Math.round(Math.random()*bombLevels);
+    let levelData = this.cache.json.get('levels').levels[currentBombLevel];
 
     // Ajout du texte de niveau
-    let levelText = this.add.text(this.cameras.main.centerX, 100, 'Niveau ' + levelData.levelNumber, {
+    let levelText = this.add.text(this.cameras.main.centerX, 100, 'Niveau ' + localStorage.getItem('currentLevel'), {
       font: '32px Arial',
       fill: '#ffffff'
     }).setOrigin(0.5);
@@ -104,9 +118,17 @@ class LevelScene extends Phaser.Scene {
       //console.log(this.cursor, zoneRectangle, circleRadius);
 
       if (this.isCursorInRect(this.cursor.angle, zoneRectangle.angle, rectWidth, circleRadius)) {
-        console.log('Le curseur est dans le rectangle');
+        localStorage.setItem('score', (parseInt(localStorage.getItem('currentLevel'))*timeLeft).toString());
+        localStorage.setItem('currentLevel', (parseInt(localStorage.getItem('currentLevel'))+1).toString());
+        this.scene.start('LevelScene');
+        music.stop();
       } else {
-        console.log('Le curseur est en dehors du rectangle');
+        let score = localStorage.getItem('score');
+        let currentLevel = localStorage.getItem('currentLevel');
+        console.log({score});
+        console.log({currentLevel});
+        this.scene.start('GameOverScene');
+        music.stop();
       }
     });
 
@@ -138,21 +160,22 @@ class LevelScene extends Phaser.Scene {
         }).setOrigin(1, 0).setInteractive();
         menuButton.on('pointerdown', function () {
           this.scene.start('MenuScene');
+          music.stop();
         }, this);
 
         // Configuration du compte à rebours
-        let timeLeft = levelData.timeLimit;
-        let timerText = this.add.text(10, 10, 'Temps restant: ' + timeLeft, {
+        let timeLeft = levelData.timeLimit*10;
+        let timerText = this.add.text(10, 10, 'Temps restant: ' + Math.ceil(timeLeft/10), {
           font: '24px Arial',
           fill: '#ffffff'
         }).setOrigin(0);
 
         this.time.addEvent({
-          delay: 1000,
+          delay: 100,
           loop: true,
           callback: function () {
             timeLeft--;
-            timerText.setText('Temps restant: ' + timeLeft);
+            timerText.setText('Temps restant: ' + Math.ceil(timeLeft/10));
 
             if (timeLeft === 0) {
               // Code pour gérer la fin du jeu si le temps est écoulé
@@ -170,19 +193,17 @@ class LevelScene extends Phaser.Scene {
       }
 
       isCursorInRect(cursorAngleTT, rectAngle, rectWidth, circleRadius) {
-
-        let wrappedRadians = Phaser.Math.Angle.Wrap(cursorAngleTT);
-        let cursorAngleInDegrees = Phaser.Math.RadToDeg(wrappedRadians);
-        let teub = Phaser.Math.Angle.WrapDegrees(cursorAngleInDegrees);
-
-        console.log(teub, rectAngle, rectWidth);
         let circonfTotaleCercle = 2 * Math.PI * circleRadius;
 
-        let decalageDroite = ((rectWidth/2)/circonfTotaleCercle) * 360;
-        let decalageGauche = ((-rectWidth/2)/circonfTotaleCercle) * 360;
+        let cursorAngle = cursorAngleTT - 90;
+        if (cursorAngle < -180) {
+          cursorAngle += 360;
+        }
+        let decalage = ((rectWidth/2)/circonfTotaleCercle) * 360;
 
-        console.log(circonfTotaleCercle, rectAngle - decalageDroite, rectAngle - decalageGauche);
+        console.log({rectAngle});
+        console.log({cursorAngle});
 
-        //return cursorAngle >= rectAngleStart && cursorAngle <= rectAngleEnd;
+        return cursorAngle >= rectAngle - decalage && cursorAngle <= rectAngle + decalage;
       }
     }

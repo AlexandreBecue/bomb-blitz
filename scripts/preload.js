@@ -52,6 +52,8 @@ class PreloadScene extends Phaser.Scene {
         progressBar.fillStyle(0xffffff, 1);
         progressBar.fillRect(250, 280, 300 * value, 30);
       });
+
+      localStorage.setItem('music', 'false');
   
       // Chargement des ressources nécessaires au jeu
       this.load.image('background', 'assets/images/background.png');

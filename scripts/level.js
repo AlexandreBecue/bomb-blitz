@@ -76,6 +76,13 @@ class LevelScene extends Phaser.Scene {
 
     // Variable pour contrôler la rotation du curseur
     let cursorRotating = true;
+    let rotationSens = 1;
+    if (localStorage.getItem('currentLevel') > 15) {
+      rotationSens = Math.round(Math.random());
+      if (rotationSens === 0) {
+        rotationSens = -1;
+      }
+    }
 
     // Faire tourner le curseur autour du cercle
     this.time.addEvent({
@@ -83,7 +90,7 @@ class LevelScene extends Phaser.Scene {
       loop: true,
       callback: () => {
         if (cursorRotating) {
-          angle += 2*(1+parseInt(localStorage.getItem('currentLevel'))/10);
+          angle += 2*(1+parseInt(localStorage.getItem('currentLevel'))/10) * rotationSens;
           this.cursor.rotation = Phaser.Math.DegToRad(angle);
         }
       }

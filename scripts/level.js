@@ -83,7 +83,7 @@ class LevelScene extends Phaser.Scene {
       loop: true,
       callback: () => {
         if (cursorRotating) {
-          angle += 5;
+          angle += 2*(1+parseInt(localStorage.getItem('currentLevel'))/10);
           this.cursor.rotation = Phaser.Math.DegToRad(angle);
         }
       }
@@ -103,7 +103,7 @@ class LevelScene extends Phaser.Scene {
     let rectangleX = circleCenterX + circleRadius * Math.cos(rectangleAngleRadians);
     let rectangleY = circleCenterY + circleRadius * Math.sin(rectangleAngleRadians);
 
-    let rectWidth = 30;
+    let rectWidth = 70-parseInt(localStorage.getItem('currentLevel'));
 
     // Ajout du rectangle avec les coordonnées calculées
     let zoneRectangle = this.add.rectangle(rectangleX, rectangleY, 10, rectWidth, 0xffffff);
@@ -196,14 +196,32 @@ class LevelScene extends Phaser.Scene {
         let circonfTotaleCercle = 2 * Math.PI * circleRadius;
 
         let cursorAngle = cursorAngleTT - 90;
-        if (cursorAngle < -180) {
+        if (cursorAngle <= -180) {
           cursorAngle += 360;
         }
         let decalage = ((rectWidth/2)/circonfTotaleCercle) * 360;
 
-        console.log({rectAngle});
-        console.log({cursorAngle});
+        let rectAngleMin = rectAngle - decalage;
+        let rectAngleMax = rectAngle + decalage;
 
-        return cursorAngle >= rectAngle - decalage && cursorAngle <= rectAngle + decalage;
+        let isRectAngleModified = false;
+
+        if (rectAngleMin < -180) {
+          isRectAngleModified = true;
+          rectAngleMin += 360;
+        }
+
+        if (rectAngleMax > 180) {
+          isRectAngleModified = true;
+          rectAngleMax -= 360;
+        }
+
+        let returnedValue = cursorAngle >= rectAngleMin && cursorAngle <= rectAngleMax;
+
+        if (isRectAngleModified) {
+          returnedValue = cursorAngle >= rectAngleMin || cursorAngle <= rectAngleMax;
+        }
+
+        return returnedValue;
       }
     }

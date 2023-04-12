@@ -10,7 +10,7 @@ var game = new Phaser.Game({
     type: Phaser.AUTO,
     
     // Définition du contexte du jeu
-    scene: [ BootScene, PreloadScene, MenuScene, LevelScene, GameOverScene, DashboardScene ],
+    scene: [ BootScene, PreloadScene, MenuScene, LevelScene, GameOverScene, DashboardScene, InputPseudoScene ],
     
     // Définition de la physique du jeu
     physics: {

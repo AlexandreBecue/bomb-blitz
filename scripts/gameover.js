@@ -5,7 +5,7 @@ class GameOverScene extends Phaser.Scene {
 
     preload() {
       this.load.image('background-level1-destoyed', 'assets/images/background-level1-destoyed.png');
-  
+
     }
 
     create() {
@@ -24,7 +24,12 @@ class GameOverScene extends Phaser.Scene {
         music.volume = 0.15;
 
         // Ajout d'un texte pour indiquer que le joueur a perdu
-        this.add.text(this.cameras.main.centerX, 100, 'PERDU', {
+        this.add.text(this.cameras.main.centerX, 100, 'VOUS AVEZ ATTEINT LE NIVEAU ' + localStorage.getItem('currentLevel'), {
+            font: '32px Arial',
+            fill: '#ffffff'
+        }).setOrigin(0.5);
+
+        this.add.text(this.cameras.main.centerX, 150, 'Score : ' + localStorage.getItem('score'), {
             font: '32px Arial',
             fill: '#ffffff'
         }).setOrigin(0.5);
@@ -44,7 +49,7 @@ class GameOverScene extends Phaser.Scene {
         });
 
         const data = {
-            username: 'test',
+            username:  localStorage.getItem('username'),
             score: localStorage.getItem('score'),
         };
 

@@ -11,7 +11,7 @@ class DashboardScene extends Phaser.Scene {
             fill: '#ffffff'
         }).setOrigin(0.5);
 
-        let backButton = this.add.sprite(this.cameras.main.centerX, this.cameras.main.centerY, 'backButton').setInteractive();
+        let backButton = this.add.sprite(75, 75, 'return').setInteractive();
         backButton.on('pointerdown', function () {
             this.scene.start('MenuScene');
         }, this);
@@ -35,7 +35,6 @@ class DashboardScene extends Phaser.Scene {
         axios.get('/bomb-blitz/api/dashboard.php').then((response) => {
             // Parcours de la liste des scores
             response.data.forEach((score, i) => {
-                console.log(score, i)
                 const row = this.add.container(0, (i + 1) * 30);
                 row.add(this.add.text(0, 0, score.username, { fill: "#ffffff" }));
                 row.add(this.add.text(100, 0, score.score, { fill: "#ffffff" }));

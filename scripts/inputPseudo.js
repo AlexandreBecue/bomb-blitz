@@ -24,12 +24,11 @@ class InputPseudoScene extends Phaser.Scene {
 
         playButton.on('pointerdown', () => {
             let value = document.querySelector("#username-input").value;
-            if (value !== "" || value !== null){
+            if (value !== "" && value !== null) {
                 localStorage.setItem('username', value);
                 this.scene.start('LevelScene');
                 usernameInput.style.display = "none";
             }
-
         });
     }
 }

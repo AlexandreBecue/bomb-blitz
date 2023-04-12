@@ -61,8 +61,13 @@ class LevelScene extends Phaser.Scene {
     let circleRadius = 100;
 
     // Dessin du cercle au milieu du jeu
+    let circleBg = new Phaser.Geom.Circle(this.cameras.main.centerX, this.cameras.main.centerY, circleRadius);
+    let circleGraphicsBg = this.add.graphics({ lineStyle: { width: 4, color: 0x000000 } });
+
     let circle = new Phaser.Geom.Circle(this.cameras.main.centerX, this.cameras.main.centerY, circleRadius);
     let circleGraphics = this.add.graphics({ lineStyle: { width: 2, color: 0xffffff } });
+    
+    circleGraphicsBg.strokeCircleShape(circleBg);
     circleGraphics.strokeCircleShape(circle);
 
     // Ajout du curseur qui tourne sur les contours du cercle

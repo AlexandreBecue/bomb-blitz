@@ -14,23 +14,23 @@ class InputPseudoScene extends Phaser.Scene {
         });
 
         // Ajout du titre
-        this.add.text(this.cameras.main.centerX, 100, 'Entrez votre pseudo', {
+        this.add.text(this.cameras.main.centerX, 150, 'ENTREZ VOTRE PSEUDO', {
             font: '32px Arial',
             fill: '#ffffff'
         }).setOrigin(0.5);
         let usernameInput = document.querySelector("#username-input");
-        let backButton = this.add.sprite(75, 75, 'return').setInteractive();
+        let backButton = this.add.sprite(75, 75, 'return').setInteractive().setScale(0.1);
         backButton.on('pointerdown', function () {
             usernameInput.style.display = "none";
             this.scene.start('MenuScene');
         }, this);
 
         backButton.on('pointerover', () => {
-            backButton.setScale(1.1);
+            backButton.setScale(0.13);
         });
 
         backButton.on('pointerout', () => {
-            backButton.setScale(1);
+            backButton.setScale(0.1);
         });
 
         usernameInput.style.display = "block";

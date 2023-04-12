@@ -6,14 +6,11 @@ class LevelScene extends Phaser.Scene {
   preload() {
     this.load.image('background', 'assets/images/background.png');
     this.load.image('background-level1', 'assets/images/background-level1.png');
-    this.load.image('bomb', 'assets/images/bomb.png');
-    this.load.image('selector', 'assets/images/selector.png');
     this.load.json('levels', 'assets/data/levels.json');
     this.load.image('cursor', 'assets/images/cursor.png');
     this.load.audio('bomb-blitz-tense', 'assets/sounds/bomb-blitz-tense.mp3');
     this.load.audio('bomb-blitz-fearful', 'assets/sounds/bomb-blitz-fearful.mp3');
     this.load.audio('bomb-blitz-scary', 'assets/sounds/bomb-blitz-scary.mp3');
-    this.load.audio('sirene_police_1', 'assets/sounds/sirene_police_1.mp3');
     this.load.audio('clock', 'assets/sounds/clock.mp3');
     this.load.audio('beep', 'assets/sounds/beep.mp3');
   }

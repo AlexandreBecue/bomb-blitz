@@ -37,9 +37,9 @@ class LeaderboardScene extends Phaser.Scene {
         const tableContainer = this.add.container(this.cameras.main.centerX, 200);
 
         const headerRow = this.add.container(0, 0);
-        const usernameFields = this.add.text(0, 0, "Username");
+        const usernameFields = this.add.text(-350, 0, "Username");
         usernameFields.setStyle({fontSize: '48px'});
-        const scoreFields = this.add.text(300, 0, "Score");
+        const scoreFields = this.add.text(100, 0, "Score");
         scoreFields.setStyle({fontSize: '48px'});
         headerRow.add(usernameFields);
         headerRow.add(scoreFields);

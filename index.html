@@ -13,17 +13,25 @@
     <script src="scripts/inputPseudo.js"></script>
     <script src="scripts/leaderboard.js"></script>
     <script src="scripts/game.js"></script>
+    <link rel="icon" type="image/png" href="/assets/images/logo.png"/>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <style>
   #username-input {
     position: absolute;
     top: 30%;
     padding: 10px;
-    font-size: 20px;
-    text-align: center;
-    margin-top: 300px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 3px solid white;
+    border-radius: 15px;
+    font-size: 18px;
+    color: white;
     transform: translate(-50%, -50%);
     display: none;
+  }
+
+  #username-input:focus {
+    outline: none;
   }
 </style>
   </head>

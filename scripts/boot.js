@@ -11,8 +11,7 @@ class BootScene extends Phaser.Scene {
       this.load.image('backButton', 'assets/images/backbutton.png');
       this.load.audio('tick', 'assets/sounds/tick.mp3');
       this.load.json('levels', 'assets/data/levels.json');
-
-      
+      this.load.image('leaderboard', 'assets/images/leaderboard.png');
     }
   
     create() {

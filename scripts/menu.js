@@ -67,7 +67,7 @@ class MenuScene extends Phaser.Scene {
             this.scene.start('InputPseudoScene');
         }, this);
         leaderboardButton.on('pointerdown', function () {
-            this.scene.start('DashboardScene');
+            this.scene.start('LeaderboardScene');
         }, this);
     }
 }

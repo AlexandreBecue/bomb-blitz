@@ -35,8 +35,7 @@ class InputPseudoScene extends Phaser.Scene {
             let value = document.querySelector("#username-input").value;
             if (value !== "" && value !== null) {
                 localStorage.setItem('username', value);
-                this.sound.get('bomb-blitz-tense-2').stop();
-                localStorage.setItem('music', 'false');
+                this.sound.get('bomb-blitz-tense').stop();
                 this.scene.start('LevelScene');
                 usernameInput.style.display = "none";
             }

@@ -10,9 +10,12 @@ class LevelScene extends Phaser.Scene {
     this.load.image('selector', 'assets/images/selector.png');
     this.load.json('levels', 'assets/data/levels.json');
     this.load.image('cursor', 'assets/images/cursor.png');
-    this.load.audio('bomb-blitz-tense-2', 'assets/sounds/bomb-blitz-tense-2.mp3');
+    this.load.audio('bomb-blitz-tense', 'assets/sounds/bomb-blitz-tense.mp3');
+    this.load.audio('bomb-blitz-fearful', 'assets/sounds/bomb-blitz-fearful.mp3');
+    this.load.audio('bomb-blitz-scary', 'assets/sounds/bomb-blitz-scary.mp3');
     this.load.audio('sirene_police_1', 'assets/sounds/sirene_police_1.mp3');
     this.load.audio('clock', 'assets/sounds/clock.mp3');
+    this.load.audio('beep', 'assets/sounds/beep.mp3');
 
   }
 
@@ -21,9 +24,23 @@ class LevelScene extends Phaser.Scene {
     let bg = this.add.image(0, 0, 'background-level1').setOrigin(0);
 
     // Ajout de la musique
-    let music = this.sound.add('clock');
-    music.play();
-    music.volume = 0.15;
+    let musicTitle = "";
+    let music;
+    let currentLevel = parseInt(localStorage.getItem('currentLevel'));
+    if (currentLevel === 1) {
+      musicTitle = "bomb-blitz-fearful";
+    } else if (currentLevel === 15) {
+      musicTitle = "bomb-blitz-scary";
+    }
+    if (musicTitle !== "") {
+      music = this.sound.add(musicTitle);
+      music.play();
+      music.volume = 0.15;
+      music.loop = true;
+    }
+    let clock = this.sound.add('clock');
+    clock.play();
+    clock.volume = 0.15;
   
     // Redimensionnement de l'image de fond pour qu'elle remplisse l'écran
     bg.displayWidth = this.sys.game.config.width;
@@ -161,14 +178,17 @@ class LevelScene extends Phaser.Scene {
         localStorage.setItem('score', (parseInt(localStorage.getItem('currentLevel'))*timeLeft).toString());
         localStorage.setItem('currentLevel', (parseInt(localStorage.getItem('currentLevel'))+1).toString());
         this.scene.start('LevelScene');
-        music.stop();
+        clock.stop();
+        let beep = this.sound.add('beep');
+        beep.play();
+        beep.volume = 0.15;
       } else {
         let score = localStorage.getItem('score');
         let currentLevel = localStorage.getItem('currentLevel');
         console.log({score});
         console.log({currentLevel});
         this.scene.start('GameOverScene');
-        music.stop();
+        clock.stop();
       }
     });
 
@@ -196,7 +216,7 @@ class LevelScene extends Phaser.Scene {
         }).setOrigin(1, 0).setInteractive();
         menuButton.on('pointerdown', function () {
           this.scene.start('MenuScene');
-          music.stop();
+          clock.stop();
         }, this);
 
         // Configuration du compte à rebours

@@ -59,7 +59,7 @@ class LevelScene extends Phaser.Scene {
     let levelData = this.cache.json.get('levels').levels[currentBombLevel];
 
     // Ajout du texte de niveau
-    let levelText = this.add.text(this.cameras.main.centerX, 100, 'Niveau ' + localStorage.getItem('currentLevel'), {
+    let levelText = this.add.text(this.cameras.main.centerX, 100, 'Bombe n°' + localStorage.getItem('currentLevel'), {
       font: '32px Arial',
       fill: '#ffffff'
     }).setOrigin(0.5);
@@ -67,13 +67,13 @@ class LevelScene extends Phaser.Scene {
     let hintText = this.add.text(levelText.x-200, levelText.y + 20, "Arrêtez le curseur dans la zone pour désamorser la bombe !", {
       font: 'italic 16px Arial',
       fill: '#ccd6db'
-    })
+    });
 
     // Consigne pour arreter le curseur
     this.add.text(levelText.x - 70, hintText.y + 25, "\"Espace\" pour arrêter", {
       font: 'italic 16px Arial',
       fill: '#ccd6db'
-    })
+    });
     
     // Ajout de l'écouteur d'événements pour la touche "espace"
     let spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);

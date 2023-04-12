@@ -170,19 +170,17 @@ class LevelScene extends Phaser.Scene {
       }
 
       isCursorInRect(cursorAngleTT, rectAngle, rectWidth, circleRadius) {
-
-        let wrappedRadians = Phaser.Math.Angle.Wrap(cursorAngleTT);
-        let cursorAngleInDegrees = Phaser.Math.RadToDeg(wrappedRadians);
-        let teub = Phaser.Math.Angle.WrapDegrees(cursorAngleInDegrees);
-
-        console.log(teub, rectAngle, rectWidth);
         let circonfTotaleCercle = 2 * Math.PI * circleRadius;
 
-        let decalageDroite = ((rectWidth/2)/circonfTotaleCercle) * 360;
-        let decalageGauche = ((-rectWidth/2)/circonfTotaleCercle) * 360;
+        let cursorAngle = cursorAngleTT - 90;
+        if (cursorAngle < -180) {
+          cursorAngle += 360;
+        }
+        let decalage = ((rectWidth/2)/circonfTotaleCercle) * 360;
 
-        console.log(circonfTotaleCercle, rectAngle - decalageDroite, rectAngle - decalageGauche);
+        console.log({rectAngle});
+        console.log({cursorAngle});
 
-        //return cursorAngle >= rectAngleStart && cursorAngle <= rectAngleEnd;
+        return cursorAngle >= rectAngle - decalage && cursorAngle <= rectAngle + decalage;
       }
     }

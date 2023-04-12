@@ -25,11 +25,15 @@ class LevelScene extends Phaser.Scene {
     });
 
     // Récupération des informations du premier niveau
-    let levelData = this.cache.json.get('levels').levels[0];
-    let currentLevel = 0;
+    if (localStorage.getItem('currentLevel') === null) {
+      localStorage.setItem('currentLevel', '1');
+    }
+    let bombLevels = this.cache.json.get('levels').levels.length-1;
+    let currentBombLevel = Math.round(Math.random()*bombLevels);
+    let levelData = this.cache.json.get('levels').levels[currentBombLevel];
 
     // Ajout du texte de niveau
-    let levelText = this.add.text(this.cameras.main.centerX, 100, 'Niveau ' + levelData.levelNumber, {
+    let levelText = this.add.text(this.cameras.main.centerX, 100, 'Niveau ' + localStorage.getItem('currentLevel'), {
       font: '32px Arial',
       fill: '#ffffff'
     }).setOrigin(0.5);
@@ -104,9 +108,11 @@ class LevelScene extends Phaser.Scene {
       //console.log(this.cursor, zoneRectangle, circleRadius);
 
       if (this.isCursorInRect(this.cursor.angle, zoneRectangle.angle, rectWidth, circleRadius)) {
-        console.log('Le curseur est dans le rectangle');
+        localStorage.setItem('currentLevel', (parseInt(localStorage.getItem('currentLevel'))+1).toString());
+        this.scene.start('LevelScene');
       } else {
-        console.log('Le curseur est en dehors du rectangle');
+        localStorage.setItem('currentLevel', '1');
+        this.scene.start('GameOverScene');
       }
     });
 

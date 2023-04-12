@@ -3,6 +3,11 @@ class GameOverScene extends Phaser.Scene {
         super({key: 'GameOverScene'});
     }
 
+    preload() {
+      this.load.image('background-level1-destoyed', 'assets/images/background-level1-destoyed.png');
+  
+    }
+
     create() {
         // Affichage du fond d'écran
         this.add.image(0, 0, 'background').setOrigin(0);

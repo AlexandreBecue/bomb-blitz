@@ -3,13 +3,22 @@ class InputPseudoScene extends Phaser.Scene {
         super({key: 'InputPseudoScene'});
     }
     create() {
-        this.add.image(0, 0, 'background').setOrigin(0);
+        let bg = this.add.image(0, 0, 'background').setOrigin(0);
+
+        // Redimensionnement de l'image de fond pour qu'elle remplisse l'écran
+        bg.displayWidth = this.sys.game.config.width;
+        bg.displayHeight = this.sys.game.config.height;
+        this.scale.on('resize', () => {
+        bg.displayWidth = this.sys.game.config.width;
+        bg.displayHeight = this.sys.game.config.height;
+        });
 
         // Ajout du titre
         this.add.text(this.cameras.main.centerX, 100, 'Entrez votre pseudo', {
             font: '32px Arial',
             fill: '#ffffff'
         }).setOrigin(0.5);
+        
         let usernameInput = document.querySelector("#username-input");
         usernameInput.style.display = "block";
 

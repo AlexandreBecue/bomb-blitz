@@ -37,7 +37,11 @@ class MenuScene extends Phaser.Scene {
         let scale = Math.min(scaleX, scaleY);
         playButton.setScale(scale);
 
-        let leaderboardButton = this.add.sprite(this.cameras.main.centerX, 400, 'leaderboard').setInteractive();
+        let leaderboardButton = this.add.sprite(0, 0, 'ranking').setInteractive();
+        leaderboardButton.setOrigin(1, 0);
+        leaderboardButton.setPosition(this.cameras.main.width, 0);
+
+        leaderboardButton.setScale(scale/3);
 
         playButton.on('pointerover', () => {
             playButton.setScale(scale+0.1);
@@ -47,11 +51,11 @@ class MenuScene extends Phaser.Scene {
             playButton.setScale(scale);
         });
         leaderboardButton.on('pointerover', () => {
-            leaderboardButton.setScale(1.1);
+            leaderboardButton.setScale(scale/3+0.1);
         });
 
         leaderboardButton.on('pointerout', () => {
-            leaderboardButton.setScale(1);
+            leaderboardButton.setScale(scale/3);
         });
 
         // Ajout d'un événement de clic sur le bouton de jeu

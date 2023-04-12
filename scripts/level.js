@@ -82,6 +82,45 @@ class LevelScene extends Phaser.Scene {
     circleGraphicsBg.fillCircle(this.cameras.main.centerX, this.cameras.main.centerY, circleRadius+30);
     circleGraphics.strokeCircleShape(circle);
 
+    // Coordonnées du centre du cercle
+    let circleCenterX = this.cameras.main.centerX;
+    let circleCenterY = this.cameras.main.centerY;
+
+    // Génération d'un angle aléatoire en degrés pour positionner le rectangle
+    let rectangleAngle = Phaser.Math.Between(0, 360);
+
+    // Longueur de la zone
+    let rectWidth = 40-parseInt(localStorage.getItem('currentLevel'));
+
+    // Zone de desamorcage
+    let greenZone= this.add.graphics();
+
+    // Conversion de l'angle en radians
+    //let rectangleAngleRadians = Phaser.Math.DegToRad(rectangleAngle);
+
+    // Calcul des coordonnées du rectangle en utilisant des coordonnées polaires
+    //let rectangleX = circleCenterX + circleRadius * Math.cos(rectangleAngleRadians);
+    //let rectangleY = circleCenterY + circleRadius * Math.sin(rectangleAngleRadians);
+
+    let startAngle = Phaser.Math.DegToRad(rectangleAngle); // Angle de départ en radians
+    let openingAngle = Phaser.Math.DegToRad(rectWidth); // Angle d'ouverture en radians
+
+    greenZone.lineStyle(8, 0x63af43); // Couleur et opacité du secteur
+    greenZone.beginPath();
+    greenZone.arc(circleCenterX, circleCenterY, circleRadius, startAngle, startAngle + openingAngle, false);
+    greenZone.lineTo(circleCenterX + circleRadius * Math.cos(startAngle + openingAngle), circleCenterY + circleRadius * Math.sin(startAngle + openingAngle));
+    greenZone.arc(circleCenterX, circleCenterY, circleRadius, startAngle + openingAngle, startAngle, true);
+    greenZone.lineTo(circleCenterX + circleRadius * Math.cos(startAngle), circleCenterY + circleRadius * Math.sin(startAngle));
+    //greenZone.arc(circleCenterX, circleCenterY, circleRadius, startAngle, startAngle + openingAngle, false);
+    greenZone.closePath();
+    greenZone.strokePath();
+
+    // Ajout du rectangle avec les coordonnées calculées
+    //let zoneRectangle = this.add.rectangle(rectangleX, rectangleY, 10, rectWidth, 0x63af43);
+
+    // Rotation du rectangle pour qu'il soit tangent au cercle
+    //zoneRectangle.rotation = rectangleAngleRadians;
+
     // Ajout du curseur qui tourne sur les contours du cercle
     let cursor = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, 'cursor');
     cursor.setOrigin(0.5, 1); // Positionne l'origine du curseur à sa base
@@ -113,37 +152,12 @@ class LevelScene extends Phaser.Scene {
       }
     });
 
-    // Coordonnées du centre du cercle
-    let circleCenterX = this.cameras.main.centerX;
-    let circleCenterY = this.cameras.main.centerY;
-
-    // Génération d'un angle aléatoire en degrés pour positionner le rectangle
-    let rectangleAngle = Phaser.Math.Between(0, 360);
-
-    // Conversion de l'angle en radians
-    let rectangleAngleRadians = Phaser.Math.DegToRad(rectangleAngle);
-
-    // Calcul des coordonnées du rectangle en utilisant des coordonnées polaires
-    let rectangleX = circleCenterX + circleRadius * Math.cos(rectangleAngleRadians);
-    let rectangleY = circleCenterY + circleRadius * Math.sin(rectangleAngleRadians);
-
-    let rectWidth = 70-parseInt(localStorage.getItem('currentLevel'));
-
-    // Ajout du rectangle avec les coordonnées calculées
-    ///////let zoneRectangleBg = this.add.rectangle(rectangleX, rectangleY, 12, rectWidth+2, 0x000000);
-    let zoneRectangle = this.add.rectangle(rectangleX, rectangleY, 10, rectWidth, 0x63af43);
-
-    // Rotation du rectangle pour qu'il soit tangent au cercle
-    /////////zoneRectangleBg.rotation = rectangleAngleRadians;
-    zoneRectangle.rotation = rectangleAngleRadians;
-
     // Lorsque la touche "espace" est enfoncée, arrêtez ou démarrez la rotation du curseur
     spaceKey.on('down', () => {
       cursorRotating = !cursorRotating;
 
-      //console.log(this.cursor, zoneRectangle, circleRadius);
-
-      if (this.isCursorInRect(this.cursor.angle, zoneRectangle.angle, rectWidth, circleRadius)) {
+      // On donne des deg
+      if (this.isCursorInRect(this.cursor.angle, Phaser.Math.RadToDeg(startAngle), Phaser.Math.RadToDeg(startAngle+openingAngle), circleRadius)) {
         localStorage.setItem('score', (parseInt(localStorage.getItem('currentLevel'))*timeLeft).toString());
         localStorage.setItem('currentLevel', (parseInt(localStorage.getItem('currentLevel'))+1).toString());
         this.scene.start('LevelScene');
@@ -158,12 +172,8 @@ class LevelScene extends Phaser.Scene {
       }
     });
 
-    // Ajout du sélecteur pour désamorcer la bombe
-    //let selector = this.add.sprite(this.cameras.main.centerX, this.cameras.main.centerY, 'selector');
-    //selector.setScale(0.8);
     let codeInput = this.add.dom(this.cameras.main.centerX, this.cameras.main.centerY + 200, 'input', 'font-size: 32px; width: 200px; height: 40px; padding: 10px; border: none; border-radius: 5px; text-align: center;');
     codeInput.node.placeholder = 'Saisir le code';
-
 
     // Ajout du bouton pour vérifier le code
     let checkCodeButton = this.add.dom(this.cameras.main.centerX, this.cameras.main.centerY + 300, 'button', 'font-size: 24px; width: 150px; height: 50px; padding: 10px; border: none; border-radius: 5px; background-color: #008CBA; color: #ffffff;', 'Vérifier le code');
@@ -218,17 +228,17 @@ class LevelScene extends Phaser.Scene {
         //this.cursor.rotation += this.cursorRotationSpeed;
       }
 
-      isCursorInRect(cursorAngleTT, rectAngle, rectWidth, circleRadius) {
+      isCursorInRect(cursorAngleTT, startAngle, endAngle, circleRadius) {
         let circonfTotaleCercle = 2 * Math.PI * circleRadius;
 
         let cursorAngle = cursorAngleTT - 90;
         if (cursorAngle <= -180) {
           cursorAngle += 360;
         }
-        let decalage = ((rectWidth/2)/circonfTotaleCercle) * 360;
+        //let decalage = ((rectWidth/2)/circonfTotaleCercle) * 360;
 
-        let rectAngleMin = rectAngle - decalage;
-        let rectAngleMax = rectAngle + decalage;
+        let rectAngleMin = startAngle;
+        let rectAngleMax = endAngle;
 
         let isRectAngleModified = false;
 

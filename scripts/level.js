@@ -9,12 +9,20 @@ class LevelScene extends Phaser.Scene {
     this.load.image('selector', 'assets/images/selector.png');
     this.load.json('levels', 'assets/data/levels.json');
     this.load.image('cursor', 'assets/images/cursor.png');
+    this.load.audio('bomb-blitz-tense-2', 'assets/sounds/bomb-blitz-tense-2.mp3');
+    this.load.audio('sirene_police_1', 'assets/sounds/sirene_police_1.mp3');
+    this.load.audio('clock', 'assets/sounds/clock.mp3');
 
   }
 
   create() {
     // Affichage du fond d'écran
     let bg = this.add.image(0, 0, 'background').setOrigin(0);
+
+    // Ajout de la musique
+    let music = this.sound.add('clock');
+    music.play();
+    music.volume = 0.15;
   
     // Redimensionnement de l'image de fond pour qu'elle remplisse l'écran
     bg.displayWidth = this.sys.game.config.width;
@@ -110,9 +118,11 @@ class LevelScene extends Phaser.Scene {
       if (this.isCursorInRect(this.cursor.angle, zoneRectangle.angle, rectWidth, circleRadius)) {
         localStorage.setItem('currentLevel', (parseInt(localStorage.getItem('currentLevel'))+1).toString());
         this.scene.start('LevelScene');
+        music.stop();
       } else {
         localStorage.setItem('currentLevel', '1');
         this.scene.start('GameOverScene');
+        music.stop();
       }
     });
 

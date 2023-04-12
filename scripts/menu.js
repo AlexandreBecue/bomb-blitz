@@ -19,9 +19,12 @@ class MenuScene extends Phaser.Scene {
         });
 
         // Ajout de la musique
-        let music = this.sound.add('bomb-blitz-tense-2');
-        music.play();
-        music.volume = 0.15;
+        if (localStorage.getItem('music') !== "true") {
+            let music = this.sound.add('bomb-blitz-tense-2');
+            music.play();
+            music.volume = 0.15;
+            localStorage.setItem('music', 'true');
+        }
 
         // Ajout d'un titre
         this.add.text(this.cameras.main.centerX, 100, 'BombBlitz', {
@@ -61,11 +64,9 @@ class MenuScene extends Phaser.Scene {
         // Ajout d'un événement de clic sur le bouton de jeu
         playButton.on('pointerdown', function () {
             this.scene.start('InputPseudoScene');
-            music.stop();
         }, this);
         leaderboardButton.on('pointerdown', function () {
             this.scene.start('DashboardScene');
-            music.stop();
         }, this);
     }
 }

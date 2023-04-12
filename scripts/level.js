@@ -48,6 +48,17 @@ class LevelScene extends Phaser.Scene {
       fill: '#ffffff'
     }).setOrigin(0.5);
 
+    let hintText = this.add.text(levelText.x-200, levelText.y + 20, "Arrêtez le curseur dans la zone pour désamorser la bombe !", {
+      font: 'italic 16px Arial',
+      fill: '#ccd6db'
+    })
+
+    // Consigne pour arreter le curseur
+    let ruleText = this.add.text(levelText.x - 70, hintText.y + 25, "\"Espace\" pour arrêter", {
+      font: 'italic 16px Arial',
+      fill: '#ccd6db'
+    })
+
     // Ajout de la bombe à désamorcer
     //let bomb = this.add.sprite(this.cameras.main.centerX, this.cameras.main.centerY, 'bomb');
 
@@ -61,13 +72,14 @@ class LevelScene extends Phaser.Scene {
     let circleRadius = 100;
 
     // Dessin du cercle au milieu du jeu
-    let circleBg = new Phaser.Geom.Circle(this.cameras.main.centerX, this.cameras.main.centerY, circleRadius);
-    let circleGraphicsBg = this.add.graphics({ lineStyle: { width: 4, color: 0x000000 } });
+    let circleBg = new Phaser.Geom.Circle(this.cameras.main.centerX, this.cameras.main.centerY, circleRadius+10);
+    let circleGraphicsBg = this.add.graphics();
+    circleGraphicsBg.fillStyle(0x000000, 0.3);
 
     let circle = new Phaser.Geom.Circle(this.cameras.main.centerX, this.cameras.main.centerY, circleRadius);
-    let circleGraphics = this.add.graphics({ lineStyle: { width: 2, color: 0xffffff } });
-    
-    circleGraphicsBg.strokeCircleShape(circleBg);
+    let circleGraphics = this.add.graphics({ lineStyle: { width: 6, color: 0xffffff } });
+
+    circleGraphicsBg.fillCircle(this.cameras.main.centerX, this.cameras.main.centerY, circleRadius+30);
     circleGraphics.strokeCircleShape(circle);
 
     // Ajout du curseur qui tourne sur les contours du cercle
@@ -118,9 +130,11 @@ class LevelScene extends Phaser.Scene {
     let rectWidth = 70-parseInt(localStorage.getItem('currentLevel'));
 
     // Ajout du rectangle avec les coordonnées calculées
-    let zoneRectangle = this.add.rectangle(rectangleX, rectangleY, 10, rectWidth, 0xffffff);
+    ///////let zoneRectangleBg = this.add.rectangle(rectangleX, rectangleY, 12, rectWidth+2, 0x000000);
+    let zoneRectangle = this.add.rectangle(rectangleX, rectangleY, 10, rectWidth, 0x63af43);
 
     // Rotation du rectangle pour qu'il soit tangent au cercle
+    /////////zoneRectangleBg.rotation = rectangleAngleRadians;
     zoneRectangle.rotation = rectangleAngleRadians;
 
     // Lorsque la touche "espace" est enfoncée, arrêtez ou démarrez la rotation du curseur
@@ -176,7 +190,7 @@ class LevelScene extends Phaser.Scene {
         }, this);
 
         // Configuration du compte à rebours
-        let timeLeft = levelData.timeLimit*10;
+        let timeLeft = levelData.timeLimit*1000;
         let timerText = this.add.text(10, 10, 'Temps restant: ' + Math.ceil(timeLeft/10), {
           font: '24px Arial',
           fill: '#ffffff'

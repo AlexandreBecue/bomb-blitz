@@ -18,15 +18,6 @@ class MenuScene extends Phaser.Scene {
             bg.displayHeight = this.sys.game.config.height;
         });
 
-        // Ajout de la musique
-        if (localStorage.getItem('music') !== "true") {
-            let music = this.sound.add('bomb-blitz-tense-2');
-            music.play();
-            music.loop = true
-            music.volume = 0.15;
-            localStorage.setItem('music', 'true');
-        }
-
         // Ajout d'un titre
         this.add.text(this.cameras.main.centerX, 100, 'BombBlitz', {
             font: '128px Arial',

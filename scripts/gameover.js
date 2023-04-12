@@ -19,9 +19,13 @@ class GameOverScene extends Phaser.Scene {
           bg.displayHeight = this.sys.game.config.height;
         });
 
-        let music = this.sound.add('explosion');
-        music.play();
-        music.volume = 0.15;
+        this.sound.get('bomb-blitz-fearful').stop();
+        if (parseInt(localStorage.getItem('currentLevel')) > 14) {
+            this.sound.get('bomb-blitz-scary').stop();
+        }
+        let explosion = this.sound.add('explosion');
+        explosion.play();
+        explosion.volume = 0.15;
 
         // Ajout d'un texte pour indiquer que le joueur a perdu
         this.add.text(this.cameras.main.centerX, 100, 'VOUS AVEZ ATTEINT LE NIVEAU ' + localStorage.getItem('currentLevel'), {
@@ -37,7 +41,7 @@ class GameOverScene extends Phaser.Scene {
         let backButton = this.add.sprite(this.cameras.main.centerX, this.cameras.main.centerY, 'backButton').setInteractive();
         backButton.on('pointerdown', function () {
             this.scene.start('MenuScene');
-            music.stop();
+            explosion.stop();
         }, this);
 
         backButton.on('pointerover', () => {

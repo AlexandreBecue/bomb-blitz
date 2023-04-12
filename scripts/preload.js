@@ -53,13 +53,17 @@ class PreloadScene extends Phaser.Scene {
         progressBar.fillRect(250, 280, 300 * value, 30);
       });
 
-      localStorage.setItem('music', 'false');
+      // Ajout de la musique
+      let music = this.sound.add('bomb-blitz-tense');
+      music.play();
+      music.loop = true
+      music.volume = 0.15;
   
       // Chargement des ressources nécessaires au jeu
       this.load.image('background', 'assets/images/background.png');
       this.load.image('selector', 'assets/images/selector.png');
       this.load.image('button', 'assets/images/button.png');
-      this.load.audio('bomb-blitz-tense-2', 'assets/sounds/bomb-blitz-tense-2.mp3');
+      this.load.audio('bomb-blitz-tense', 'assets/sounds/bomb-blitz-tense.mp3');
       this.load.audio('sirene_police_1', 'assets/sounds/sirene_police_1.mp3');
       this.load.json('levels', 'assets/data/levels.json');
       this.load.audio('explosion', 'assets/sounds/explosion.mp3');

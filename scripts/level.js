@@ -220,7 +220,7 @@ class LevelScene extends Phaser.Scene {
         }, this);
 
         // Configuration du compte à rebours
-        let timeLeft = levelData.timeLimit*1000;
+        let timeLeft = levelData.timeLimit*10;
         let timerText = this.add.text(10, 10, 'Temps restant: ' + Math.ceil(timeLeft/10), {
           font: '24px Arial',
           fill: '#ffffff'

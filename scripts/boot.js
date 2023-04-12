@@ -7,7 +7,6 @@ class BootScene extends Phaser.Scene {
       // Chargement des ressources nécessaires au jeu
       this.load.image('background', 'assets/images/background.png');
       this.load.image('selector', 'assets/images/selector.png');
-      this.load.image('button', 'assets/images/button.png');
       this.load.image('playButton', 'assets/images/playButton.png');
       this.load.image('backButton', 'assets/images/backbutton.png');
       this.load.audio('bomb-blitz-tense', 'assets/sounds/bomb-blitz-tense.mp3');

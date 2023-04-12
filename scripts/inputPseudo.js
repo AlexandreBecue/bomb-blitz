@@ -22,13 +22,13 @@ class InputPseudoScene extends Phaser.Scene {
         let usernameInput = document.querySelector("#username-input");
         usernameInput.style.display = "block";
 
-        const playButton = this.add.sprite(this.cameras.main.centerX, 500, 'button').setInteractive();
+        const playButton = this.add.sprite(this.cameras.main.centerX, 500, 'playButton').setInteractive().setScale(0.7);
         playButton.on('pointerover', () => {
-            playButton.setScale(1.1);
+            playButton.setScale(0.8);
         });
 
         playButton.on('pointerout', () => {
-            playButton.setScale(1);
+            playButton.setScale(0.7);
         });
 
         playButton.on('pointerdown', () => {

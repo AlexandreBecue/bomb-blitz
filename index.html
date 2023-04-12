@@ -14,20 +14,30 @@
     <script src="scripts/game.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <style>
+
   #username-input {
     position: absolute;
+    top: 40%;
+    left: 49%;
     padding: 10px;
-    font-size: 20px;
-    text-align: center;
-    margin-top: 250px;
-    margin-left: 400px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 3px solid white;
+    border-radius: 15px;
+    font-size: 18px;
+    color: white;
     transform: translate(-50%, -50%);
     display: none;
   }
+
+  #username-input:focus {
+    outline: none;
+  }
+
 </style>
   </head>
   <body>
     <div id="game-container"></div>
-    <input type="text" name="name" placeholder="Full Name" id="username-input" />
+    <input type="text" name="name" placeholder="Votre Pseudo" id="username-input" />
   </body>
 </html>

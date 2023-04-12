@@ -39,7 +39,10 @@ class GameOverScene extends Phaser.Scene {
             font: '32px Arial',
             fill: '#ffffff'
         }).setOrigin(0.5);
-        this.add.text(this.cameras.main.centerX, 100, 'VOUS AVEZ DÉSAMORCÉ ' + (parseInt(localStorage.getItem('currentLevel'))-1).toString() + " BOMBES !", {
+
+        let currentLevel = parseInt(localStorage.getItem('currentLevel'))-1;
+        let message = 'VOUS AVEZ DÉSAMORCÉ ' + currentLevel.toString() + (currentLevel>1 ? " BOMBES !" : " BOMBE !");
+        this.add.text(this.cameras.main.centerX, 100, message, {
             font: '32px Arial',
             fill: '#ffffff'
         }).setOrigin(0.5);
@@ -49,21 +52,29 @@ class GameOverScene extends Phaser.Scene {
             fill: '#ffffff'
         }).setOrigin(0.5);
 
-        let backButton = this.add.sprite(this.cameras.main.centerX, this.cameras.main.centerY, 'backButton').setInteractive();
-        backButton.on('pointerdown', function () {
-            this.scene.start('MenuScene');
-            localStorage.setItem('music', 'true');
+        let retryButton = this.add.sprite(this.cameras.main.centerX, this.cameras.main.centerY, 'retryButton').setInteractive();
+        retryButton.on('pointerdown', function () {
+            this.scene.start('LevelScene');
             this.sound.getAll('explosion').forEach(explosion => {
                 explosion.stop();
             });
         }, this);
 
-        backButton.on('pointerover', () => {
-            backButton.setScale(1.1);
+        retryButton.on('pointerout', () => {
+            retryButton.setScale(1);
         });
 
-        backButton.on('pointerout', () => {
-            backButton.setScale(1);
+        let exitButton = this.add.sprite(this.cameras.main.centerX, 700, 'exitButton').setInteractive();
+        exitButton.on('pointerdown', function () {
+            localStorage.setItem('music', 'true');
+            this.scene.start('MenuScene');
+            this.sound.getAll('explosion').forEach(explosion => {
+                explosion.stop();
+            });
+        }, this);
+
+        exitButton.on('pointerout', () => {
+            exitButton.setScale(1);
         });
 
         const data = {

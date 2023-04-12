@@ -22,11 +22,11 @@ class GameOverScene extends Phaser.Scene {
         this.sound.getAll('beep').forEach(beep => {
             beep.stop();
         });
-        this.sound.getAll('bomb-blitz-fearful').forEach(fearful => {
+        this.sound.getAll('fearful').forEach(fearful => {
             fearful.stop();
         });
         if (parseInt(localStorage.getItem('currentLevel')) > 14) {
-            this.sound.getAll('bomb-blitz-scary').forEach(scary => {
+            this.sound.getAll('scary').forEach(scary => {
                 scary.stop();
             });
         }

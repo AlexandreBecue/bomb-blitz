@@ -5,7 +5,7 @@ class MenuScene extends Phaser.Scene {
 
     create() {
         if (localStorage.getItem('music') === 'true') {
-            let music = this.sound.add('bomb-blitz-tense');
+            let music = this.sound.add('tense');
             music.play();
             music.loop = true
             music.volume = 0.15;

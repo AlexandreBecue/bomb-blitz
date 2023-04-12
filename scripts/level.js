@@ -16,7 +16,6 @@ class LevelScene extends Phaser.Scene {
     this.load.audio('sirene_police_1', 'assets/sounds/sirene_police_1.mp3');
     this.load.audio('clock', 'assets/sounds/clock.mp3');
     this.load.audio('beep', 'assets/sounds/beep.mp3');
-
   }
 
   create() {
@@ -24,6 +23,9 @@ class LevelScene extends Phaser.Scene {
     let bg = this.add.image(0, 0, 'background-level1').setOrigin(0);
 
     // Ajout de la musique
+    this.sound.getAll('bomb-blitz-tense').forEach(sound => {
+      sound.stop();
+    });
     let musicTitle = "";
     let music;
     let currentLevel = parseInt(localStorage.getItem('currentLevel'));
@@ -175,20 +177,16 @@ class LevelScene extends Phaser.Scene {
 
       // On donne des deg
       if (this.isCursorInRect(this.cursor.angle, Phaser.Math.RadToDeg(startAngle), Phaser.Math.RadToDeg(startAngle+openingAngle), circleRadius)) {
-        localStorage.setItem('score', (parseInt(localStorage.getItem('currentLevel'))*timeLeft).toString());
-        localStorage.setItem('currentLevel', (parseInt(localStorage.getItem('currentLevel'))+1).toString());
-        this.scene.start('LevelScene');
         clock.stop();
         let beep = this.sound.add('beep');
         beep.play();
         beep.volume = 0.15;
+        localStorage.setItem('score', (parseInt(localStorage.getItem('currentLevel'))*timeLeft).toString());
+        localStorage.setItem('currentLevel', (parseInt(localStorage.getItem('currentLevel'))+1).toString());
+        this.scene.start('LevelScene');
       } else {
-        let score = localStorage.getItem('score');
-        let currentLevel = localStorage.getItem('currentLevel');
-        console.log({score});
-        console.log({currentLevel});
-        this.scene.start('GameOverScene');
         clock.stop();
+        this.scene.start('GameOverScene');
       }
     });
 
@@ -200,7 +198,7 @@ class LevelScene extends Phaser.Scene {
     checkCodeButton.addListener('click');
     checkCodeButton.on('click', function () {
         let code = codeInput.node.value;
-        if (code == levelData.code) {
+        if (code === levelData.code) {
             // Le code est correct, passer au niveau suivant
             console.log('Code correct !');
         } else {
@@ -208,16 +206,6 @@ class LevelScene extends Phaser.Scene {
             console.log('Code incorrect !');
         }
     }, this);
-
-    
-        let menuButton = this.add.text(this.cameras.main.width - 10, this.cameras.main.height - 50, 'Menu', {
-          font: '24px Arial',
-          fill: '#ffffff'
-        }).setOrigin(1, 0).setInteractive();
-        menuButton.on('pointerdown', function () {
-          this.scene.start('MenuScene');
-          clock.stop();
-        }, this);
 
         // Configuration du compte à rebours
         let timeLeft = levelData.timeLimit*10;

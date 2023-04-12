@@ -4,6 +4,14 @@ class MenuScene extends Phaser.Scene {
     }
 
     create() {
+        if (localStorage.getItem('music') === 'true') {
+            let music = this.sound.add('bomb-blitz-tense');
+            music.play();
+            music.loop = true
+            music.volume = 0.15;
+            localStorage.setItem('music', 'false');
+        }
+
         // Affichage du fond d'écran
         let bg = this.add.image(0, 0, 'background').setOrigin(0);
 

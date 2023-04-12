@@ -19,9 +19,16 @@ class GameOverScene extends Phaser.Scene {
           bg.displayHeight = this.sys.game.config.height;
         });
 
-        this.sound.get('bomb-blitz-fearful').stop();
+        this.sound.getAll('beep').forEach(beep => {
+            beep.stop();
+        });
+        this.sound.getAll('bomb-blitz-fearful').forEach(fearful => {
+            fearful.stop();
+        });
         if (parseInt(localStorage.getItem('currentLevel')) > 14) {
-            this.sound.get('bomb-blitz-scary').stop();
+            this.sound.getAll('bomb-blitz-scary').forEach(scary => {
+                scary.stop();
+            });
         }
         let explosion = this.sound.add('explosion');
         explosion.play();
@@ -41,7 +48,10 @@ class GameOverScene extends Phaser.Scene {
         let backButton = this.add.sprite(this.cameras.main.centerX, this.cameras.main.centerY, 'backButton').setInteractive();
         backButton.on('pointerdown', function () {
             this.scene.start('MenuScene');
-            explosion.stop();
+            localStorage.setItem('music', 'true');
+            this.sound.getAll('explosion').forEach(explosion => {
+                explosion.stop();
+            });
         }, this);
 
         backButton.on('pointerover', () => {

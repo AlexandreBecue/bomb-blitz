@@ -35,6 +35,7 @@ class LevelScene extends Phaser.Scene {
     // Récupération des informations du premier niveau
     if (localStorage.getItem('currentLevel') === null) {
       localStorage.setItem('currentLevel', '1');
+      localStorage.setItem('score', '0');
     }
     let bombLevels = this.cache.json.get('levels').levels.length-1;
     let currentBombLevel = Math.round(Math.random()*bombLevels);
@@ -116,11 +117,15 @@ class LevelScene extends Phaser.Scene {
       //console.log(this.cursor, zoneRectangle, circleRadius);
 
       if (this.isCursorInRect(this.cursor.angle, zoneRectangle.angle, rectWidth, circleRadius)) {
+        localStorage.setItem('score', (parseInt(localStorage.getItem('currentLevel'))*timeLeft).toString());
         localStorage.setItem('currentLevel', (parseInt(localStorage.getItem('currentLevel'))+1).toString());
         this.scene.start('LevelScene');
         music.stop();
       } else {
-        localStorage.setItem('currentLevel', '1');
+        let score = localStorage.getItem('score');
+        let currentLevel = localStorage.getItem('currentLevel');
+        console.log({score});
+        console.log({currentLevel});
         this.scene.start('GameOverScene');
         music.stop();
       }
@@ -157,18 +162,18 @@ class LevelScene extends Phaser.Scene {
         }, this);
 
         // Configuration du compte à rebours
-        let timeLeft = levelData.timeLimit;
-        let timerText = this.add.text(10, 10, 'Temps restant: ' + timeLeft, {
+        let timeLeft = levelData.timeLimit*10;
+        let timerText = this.add.text(10, 10, 'Temps restant: ' + Math.ceil(timeLeft/10), {
           font: '24px Arial',
           fill: '#ffffff'
         }).setOrigin(0);
 
         this.time.addEvent({
-          delay: 1000,
+          delay: 100,
           loop: true,
           callback: function () {
             timeLeft--;
-            timerText.setText('Temps restant: ' + timeLeft);
+            timerText.setText('Temps restant: ' + Math.ceil(timeLeft/10));
 
             if (timeLeft === 0) {
               // Code pour gérer la fin du jeu si le temps est écoulé

@@ -33,8 +33,11 @@ class GameOverScene extends Phaser.Scene {
 
         const data = {
             username: 'test',
-            score: 12,
+            score: localStorage.getItem('score'),
         };
+
+        localStorage.setItem('currentLevel', '1');
+        localStorage.setItem('score', '0');
 
         axios.post('/bomb-blitz/api/dashboard.php', data)
             .then(function (response) {

@@ -27,10 +27,7 @@ class MenuScene extends Phaser.Scene {
         });
 
         // Ajout d'un titre
-        this.add.text(this.cameras.main.centerX, 100, 'BombBlitz', {
-            font: '128px Arial',
-            fill: '#ffffff'
-        }).setOrigin(0.5);
+        let logo = this.add.sprite(this.cameras.main.centerX, this.cameras.main.centerY - 200, 'logo').setOrigin(0.5);
 
         // Ajout d'un bouton pour commencer le jeu
         let playButton = this.add.sprite(this.cameras.main.centerX, this.cameras.main.centerY, 'playButton').setInteractive();

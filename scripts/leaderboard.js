@@ -15,22 +15,22 @@ class LeaderboardScene extends Phaser.Scene {
             bg.displayHeight = this.sys.game.config.height;
         });
 
-        this.add.text(this.cameras.main.centerX, 100, 'leaderboard', {
+        this.add.text(this.cameras.main.centerX, 100, 'TABLEAU DES SCORES', {
             font: '32px Arial',
             fill: '#ffffff'
         }).setOrigin(0.5);
 
-        let backButton = this.add.sprite(75, 75, 'return').setInteractive();
+        let backButton = this.add.sprite(75, 75, 'return').setInteractive().setScale(0.1);
         backButton.on('pointerdown', function () {
             this.scene.start('MenuScene');
         }, this);
 
         backButton.on('pointerover', () => {
-            backButton.setScale(1.1);
+            backButton.setScale(0.13);
         });
 
         backButton.on('pointerout', () => {
-            backButton.setScale(1);
+            backButton.setScale(0.1);
         });
 
 

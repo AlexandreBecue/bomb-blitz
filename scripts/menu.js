@@ -26,39 +26,39 @@ class MenuScene extends Phaser.Scene {
             bg.displayHeight = this.sys.game.config.height;
         });
 
-        // Ajout d'un titre
-        this.add.text(this.cameras.main.centerX, 100, 'BombBlitz', {
-            font: '128px Arial',
-            fill: '#ffffff'
-        }).setOrigin(0.5);
+        // Logo Header
+
+        let logo = this.add.sprite(this.cameras.main.centerX, 175, 'logo');
+        logo.displayWidth = 325;
+        logo.displayHeight = 325;
 
         // Ajout d'un bouton pour commencer le jeu
         let playButton = this.add.sprite(this.cameras.main.centerX, this.cameras.main.centerY, 'playButton').setInteractive();
 
-        let scaleX = screenWidth / playButton.width / 2;
-        let scaleY = screenHeight / playButton.height / 2;
+        let scaleX = screenWidth / playButton.width / 5;
+        let scaleY = screenHeight / playButton.height / 5;
         let scale = Math.min(scaleX, scaleY);
         playButton.setScale(scale);
 
         let leaderboardButton = this.add.sprite(0, 0, 'ranking').setInteractive();
         leaderboardButton.setOrigin(1, 0);
-        leaderboardButton.setPosition(this.cameras.main.width, 0);
+        leaderboardButton.setPosition(this.cameras.main.width-20, 20);
 
-        leaderboardButton.setScale(scale/3);
+        leaderboardButton.setScale(scale/5);
 
         playButton.on('pointerover', () => {
-            playButton.setScale(scale+0.1);
+            playButton.setScale(scale+0.03);
         });
 
         playButton.on('pointerout', () => {
             playButton.setScale(scale);
         });
         leaderboardButton.on('pointerover', () => {
-            leaderboardButton.setScale(scale/3+0.1);
+            leaderboardButton.setScale(scale/5+0.03);
         });
 
         leaderboardButton.on('pointerout', () => {
-            leaderboardButton.setScale(scale/3);
+            leaderboardButton.setScale(scale/5);
         });
 
         // Ajout d'un événement de clic sur le bouton de jeu

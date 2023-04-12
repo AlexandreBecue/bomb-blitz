@@ -49,10 +49,10 @@ class LeaderboardScene extends Phaser.Scene {
             // Parcours de la liste des scores
             response.data.forEach((score, i) => {
                 const row = this.add.container(0, (i + 2) * 35);
-                const username = this.add.text(0, 0, score.username);
+                const username = this.add.text(-350, 0, score.username);
                 username.setStyle({fontSize: '32px'});
                 username.setStyle({align: 'left'});
-                const scoreText = this.add.text(300, 0, score.score);
+                const scoreText = this.add.text(100, 0, score.score);
                 scoreText.setStyle({fontSize: '32px'});
                 scoreText.setStyle({align: 'right'});
                 row.add(username);

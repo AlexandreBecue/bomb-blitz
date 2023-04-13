@@ -44,13 +44,13 @@ Go to the project directory
 Install dependencies
 
 ```bash
-  npm install
+  npm install && npm install -g browser-sync
 ```
 
 Start the server
 
 ```bash
-  npm run start
+  browser-sync start --server --files "."
 ```
 
 

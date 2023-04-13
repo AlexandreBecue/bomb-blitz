@@ -52,7 +52,7 @@ Start the server
 ```bash
   browser-sync start --server --files "."
 ```
-
+NB : Ranking system doesn't work when running in local
 
 ## Authors
 

@@ -21,7 +21,7 @@ D√©samorcer un maximum de bombes avant qu'elles n'explosent. Le temps est limit√
 ## Contexte audiovisuel
 **Images :** Midjourney
 
-**Sons :**
+**Sons :** Beatoven
 
 
 ## Link to play
